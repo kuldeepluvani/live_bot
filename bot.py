@@ -4,7 +4,7 @@ import requests
 from websocket import create_connection
 
 
-ws = create_connection("wss://api2.bitfinex.com:3000/ws/2")
+ws = create_connection('wss://api.bitfinex.com/ws')
 
 #pair fetching
 url = "https://api.bitfinex.com/v1/symbols"
@@ -18,6 +18,20 @@ ws.send(json.dumps({
     "pair": "ETHUSD",
     "prec": "P0"
 }))
+
+
+
+def moving_average(a, N):
+    cumsum = [0]
+    moving_avg = [0]
+    
+    for i, x in enumerate (a,1):
+        cumsum.append(cumsum[i-1] + x)
+        if i>= N:
+            moving = (cumsum[i] - cumsum[i-N])/N
+            moving_avg.append(moving)
+    return moving_avg[-1]
+
 
 pending = []
 data = []
@@ -36,6 +50,8 @@ while X:
     if i > 3:
         if result[1] == 'te':
             pending.append(result[2][0])
+        elif result[1] == 'hb':
+            pass
         elif result[1] == 'tu':
             if result[2][0] in pending:
                 pending.remove(result[2][0])
