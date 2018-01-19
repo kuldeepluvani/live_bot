@@ -23,7 +23,9 @@ else:
         except Exception, e:
             print "Failed to open a file:", args.log
        
-
+print "\n\n--------------------------------------------"
+print "Bot started at:", datetime.now(), "\n"
+    
 def moving_average(a, N):
     cumsum = [0]
     moving_avg = [0]
