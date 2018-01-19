@@ -1,7 +1,28 @@
 import json
 from websocket import create_connection
+from datetime import datetime
+import argparse
+import sys
 
 instance = 3
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-l','--log', help='Log to some file?', default='n')
+args = parser.parse_args()
+
+if args.log == 'n' or args.log == 'N':
+    pass
+else:
+    try:
+        sys.stdout = open(args.log, 'a')
+    except:
+        try:
+            sys.stdout = open(args.log, 'w')
+        except (SystemExit, KeyboardInterrupt):
+            raise
+        except Exception, e:
+            print "Failed to open a file:", args.log
+       
 
 def moving_average(a, N):
     cumsum = [0]
@@ -131,7 +152,7 @@ while True:
 
             
             
-            print "STRATED WITH",initial_assets, sign, "MONEY I HAVE", total_balance, percentage_change,"%"
+            print datetime.now(),"STRATED WITH",initial_assets, sign, "MONEY I HAVE", total_balance, percentage_change,"%"
             total_trade_sold = 0
             total_trade_bought = 0
 
